@@ -1,2 +1,2 @@
-# apollo-federation-example
-Apollo Federation Example with AWS Lambda
+# Implementing Course Service
+Implementing course service
