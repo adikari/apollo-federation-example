@@ -1,0 +1,30 @@
+{
+  "name": "user-service",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "git@github.com:adikari/apollo-federation-example.git",
+  "author": "subash adhikari <me@subash.com.au>",
+  "license": "MIT",
+  "scripts": {
+    "deploy": "./bin/deploy",
+    "test": "echo :(",
+    "lint": "eslint 'src/**/*.js'"
+  },
+  "dependencies": {
+    "@apollo/federation": "^0.20.6",
+    "@apollo/gateway": "^0.21.3",
+    "apollo-server-lambda": "^2.9.7",
+    "graphql": "^14.5.8",
+    "lodash.merge": "^4.6.2"
+  },
+  "devDependencies": {
+    "eslint": "^6.7.1",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.1.1",
+    "prettier": "^2.2.0",
+    "serverless": "^1.55.1",
+    "serverless-offline": "^5.12.0"
+  }
+}

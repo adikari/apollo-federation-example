@@ -1,0 +1,53 @@
+#!/bin/bash
+
+set -eou pipefail
+
+STAGE=""
+AWS_REGION="us-east-1"
+
+usage="USAGE: $(basename "$0") [-s|--stage] <stage>
+
+where:
+    -s | --stage        stage for deployment (required)
+    -h | --help         show this help text"
+
+while [ $# -gt 0 ]; do
+    if [[ $1 =~ "--"* ]]; then
+        case $1 in
+            --help|-h) echo "$usage"; exit; ;;
+            --stage|-s) STAGE=$2;;
+        esac
+    fi
+    shift
+done
+
+if [ -z "$STAGE" ]; then
+  echo "$usage"; exit 1;
+fi
+
+AWS_ACCOUNT_ID="$(aws sts get-caller-identity --query "Account" --output text)"
+
+if [ -z "$AWS_ACCOUNT_ID" ]; then
+  echo "Could not read determine AWS account id.";
+  exit 1;
+fi
+
+export AWS_ACCOUNT_ID
+export STAGE
+
+CURRENT_DIR=$(pwd)
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
+
+echo "Moving to $DIR"
+
+cd "$DIR"
+
+echo "AWS Account ID: $AWS_ACCOUNT_ID"
+
+echo "Deploying serverless..."
+./node_modules/.bin/sls deploy --stage "$STAGE" --region "$AWS_REGION" --verbose
+
+cd $CURRENT_DIR
+unset AWS_ACCOUNT_ID
+unset STAGE
+
