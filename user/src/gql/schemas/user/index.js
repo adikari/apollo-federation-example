@@ -1,7 +1,7 @@
 const { gql } = require('apollo-server-lambda');
 
 const typeDefs = gql`
-  type User {
+  type User @key(fields: "id") {
     id: ID!
     email: String
     firstname: String
@@ -16,8 +16,11 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    user: (_, { id }, { User }) => User.byId({ userId: parseInt(id, 10) }),
+    user: (_, { id }, { User }) => User.byId({ userId: id }),
     allUsers: (_, __, { User }) => User.all()
+  },
+  User: {
+    __resolveReference: ({ id }, { User }) => User.byId({ userId: id })
   }
 };
 
