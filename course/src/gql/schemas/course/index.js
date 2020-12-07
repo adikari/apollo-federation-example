@@ -12,6 +12,10 @@ const typeDefs = gql`
     id: ID! @external
     startedCourses: [Course]
     completedCourses: [Course]
+
+    firstname: String @external
+    lastname: String @external
+    fullname: String @requires(fields: "firstname, lastname")
   }
 
   extend type Query {
@@ -31,7 +35,9 @@ const resolvers = {
       UserCourse.getUserStartedCourses({ userId: id }),
 
     completedCourses: ({ id }, _, { UserCourse }) =>
-      UserCourse.getUserCompletedCourses({ userId: id })
+      UserCourse.getUserCompletedCourses({ userId: id }),
+
+    fullname: ({ firstname, lastname }) => `${firstname} ${lastname}`
   }
 };
 
