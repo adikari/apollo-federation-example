@@ -5,7 +5,7 @@ const typeDefs = gql`
     id: ID!
     title: String
     duration: Int
-    instructor: User
+    instructor: User @provides(fields: "firstname")
   }
 
   extend type User @key(fields: "id") {
@@ -28,7 +28,11 @@ const resolvers = {
     allCourses: (_, __, { Course }) => Course.all()
   },
   Course: {
-    instructor: course => ({ __typename: 'User', id: course.instructor })
+    instructor: course => ({
+      __typename: 'User',
+      id: course.instructor.userId,
+      firstname: course.instructor.firstname
+    })
   },
   User: {
     startedCourses: ({ id }, _, { UserCourse }) =>
